@@ -15,6 +15,17 @@ class CameraService:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         image_path = os.path.join(Config.SAVE_DIR, f"picture_{timestamp}.jpg")
         
+        # 카메라 연결 오류로 인해 Test 코드
+        if Config.USE_MOCK_CAMERA:
+            mock_image_path = os.path.join(Config.SAVE_DIR, "test_image.jpg")
+            if not os.path.exists(mock_image_path):
+                logger.error(f"MOCK 이미지 파일이 존재하지 않습니다: {mock_image_path}")
+                raise FileNotFoundError(f"MOCK 이미지 {mock_image_path} 없음")
+            
+            logger.warning(f"MOCK 모드 활성화 - 실제 촬영 대신 {mock_image_path} 사용")
+            return mock_image_path
+
+
         try:
             logger.info("이미지 촬영 시작")
             subprocess.run(

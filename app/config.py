@@ -22,6 +22,9 @@ class Config:
     # 타임아웃 설정 (초)
     AI_TIMEOUT = int(os.getenv("AI_TIMEOUT", 20))
     FRONTEND_TIMEOUT = int(os.getenv("FRONTEND_TIMEOUT", 10))
+
+    # 카메라 연결 오류로 인해 테스트용 코드
+    USE_MOCK_CAMERA = os.getenv("USE_MOCK_CAMERA", "false").lower() == "true"
     
     @staticmethod
     def init_app():
@@ -30,6 +33,7 @@ class Config:
         print(f"DEBUG: AI_SERVER_URL = {Config.AI_SERVER_URL}")
         print(f"DEBUG: HOST = {Config.HOST}")
         print(f"DEBUG: PORT = {Config.PORT}")
+        print(f"DEBUG: USE_MOCK_CAMERA = {Config.USE_MOCK_CAMERA}")
         os.makedirs(Config.SAVE_DIR, exist_ok=True)
         
         if not Config.AI_SERVER_URL:
@@ -43,5 +47,6 @@ class Config:
             "ai_server": Config.AI_SERVER_URL,
             "frontend_callback": Config.FRONTEND_URL,
             "host": Config.HOST,
-            "port": Config.PORT
+            "port": Config.PORT,
+            "use_mock_camera": Config.USE_MOCK_CAMERA
         }
