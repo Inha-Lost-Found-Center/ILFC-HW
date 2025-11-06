@@ -28,7 +28,7 @@ def capture_and_process():
         ai_response = AIService.send_image(image_path)
         
         # 3. 프론트엔드로 콜백
-        # FrontendService.send_result(ai_response)
+        FrontendService.send_result(ai_response)
         
         logger.info(f"처리 완료 - 카테고리: {ai_response.get('category')}")
         
