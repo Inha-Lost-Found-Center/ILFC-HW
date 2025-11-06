@@ -52,19 +52,3 @@ def health_check():
         "status": "healthy",
         "message": "Raspberry Pi Camera Server 작동중"
     }
-
-@router.post("/test/capture")
-def test_capture():
-    """테스트용 간단한 촬영 API"""
-    try:
-        logger.info("테스트 촬영 요청")
-        image_path = CameraService.capture_image()
-        
-        return {
-            "success": True,
-            "message": "테스트 촬영 완료",
-            "image_path": image_path
-        }
-    except Exception as e:
-        logger.error(f"테스트 촬영 실패: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
