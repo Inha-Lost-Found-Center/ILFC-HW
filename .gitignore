@@ -16,3 +16,12 @@ __pycache__/
 # 시스템 파일
 .DS_Store
 Thumbs.db
+
+# 로그 파일
+logs/
+*.log
+
+# 이미지 파일
+*.jpg
+*.png
+*.jpeg
