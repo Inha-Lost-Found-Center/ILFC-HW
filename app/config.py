@@ -14,6 +14,9 @@ class Config:
     AI_SERVER_URL = os.getenv("AI_SERVER_URL")
     
     # AWS IoT Core MQTT
+    DEVICE_NAME = os.getenv("DEVICE_NAME")
+    CLIENT_NAME = os.getenv("CLIENT_NAME")
+
     MQTT_HOST = os.getenv("MQTT_HOST")
     MQTT_TOPIC = os.getenv("MQTT_TOPIC")
 
