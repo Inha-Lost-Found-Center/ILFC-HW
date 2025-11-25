@@ -13,12 +13,20 @@ class Config:
     # AI 서버 URL
     AI_SERVER_URL = os.getenv("AI_SERVER_URL")
     
-    # 프론트엔드 콜백
-    FRONTEND_URL = os.getenv("FRONTEND_URL")
+    # AWS IoT Core MQTT
+    MQTT_HOST = os.getenv("MQTT_HOST")
+    MQTT_TOPIC = os.getenv("MQTT_TOPIC")
+
+    AWS_ROOT_CA = os.getenv("AWS_ROOT_CA")
+    AWS_CERT = os.getenv("AWS_CERT")
+    AWS_PRIVATE_KEY = os.getenv("AWS_PRIVATE_KEY")
+
+    # # 프론트엔드 콜백
+    # FRONTEND_URL = os.getenv("FRONTEND_URL")
     
-    # 서버 호스트/포트
-    HOST = os.getenv("HOST")
-    PORT = int(os.getenv("PORT"))
+    # # 서버 호스트/포트
+    # HOST = os.getenv("HOST")
+    # PORT = int(os.getenv("PORT"))
     
     # 타임아웃 설정 (초)
     AI_TIMEOUT = int(os.getenv("AI_TIMEOUT", 20))
