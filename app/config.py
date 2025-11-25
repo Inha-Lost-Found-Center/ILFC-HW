@@ -23,13 +23,6 @@ class Config:
     AWS_ROOT_CA = os.getenv("AWS_ROOT_CA")
     AWS_CERT = os.getenv("AWS_CERT")
     AWS_PRIVATE_KEY = os.getenv("AWS_PRIVATE_KEY")
-
-    # # 프론트엔드 콜백
-    # FRONTEND_URL = os.getenv("FRONTEND_URL")
-    
-    # # 서버 호스트/포트
-    # HOST = os.getenv("HOST")
-    # PORT = int(os.getenv("PORT"))
     
     # 타임아웃 설정 (초)
     AI_TIMEOUT = int(os.getenv("AI_TIMEOUT", 20))
@@ -47,9 +40,6 @@ class Config:
         Config.logger.info("=== Config 초기화 ===")
         Config.logger.info(f"SAVE_DIR = {Config.SAVE_DIR}")
         Config.logger.info(f"AI_SERVER_URL = {Config.AI_SERVER_URL}")
-        Config.logger.info(f"FRONTEND_URL = {Config.FRONTEND_URL}")
-        Config.logger.info(f"HOST = {Config.HOST}")
-        Config.logger.info(f"PORT = {Config.PORT}")
         Config.logger.info(f"USE_MOCK_CAMERA = {Config.USE_MOCK_CAMERA}")
         os.makedirs(Config.SAVE_DIR, exist_ok=True)
         
@@ -73,8 +63,6 @@ class Config:
         return {
             "save_dir": Config.SAVE_DIR,
             "ai_server": Config.AI_SERVER_URL,
-            "frontend_callback": Config.FRONTEND_URL,
-            "host": Config.HOST,
-            "port": Config.PORT,
             "use_mock_camera": Config.USE_MOCK_CAMERA
+
         }
