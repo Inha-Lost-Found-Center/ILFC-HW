@@ -16,7 +16,6 @@ def capture_and_process():
     동작 순서:
     1. 라즈베리파이 카메라로 사진 촬영
     2. AI 서버로 이미지 전송 및 분석 결과 수신
-    3. 프론트엔드로 결과 반환
     """
     try:
         logger.info("프론트엔드로부터 촬영 요청 수신")
@@ -27,18 +26,18 @@ def capture_and_process():
         # 2. AI 서버로 전송 및 분석
         ai_response = AIService.send_image(image_path)
         
-        # 3. 프론트엔드로 콜백
-        FrontendService.send_result(ai_response)
+        # # 3. 프론트엔드로 콜백
+        # FrontendService.send_result(ai_response)
         
-        logger.info(f"처리 완료 - 카테고리: {ai_response.get('category')}")
+        # logger.info(f"처리 완료 - 카테고리: {ai_response.get('category')}")
         
-        # 4. 프론트엔드로 직접 응답 반환
-        return {
-            "success": True,
-            "message": "이미지 촬영 및 분석 완료",
-            "category": ai_response.get("category"),
-            "ai_result": ai_response
-        }
+        # # 4. 프론트엔드로 직접 응답 반환
+        # return {
+        #     "success": True,
+        #     "message": "이미지 촬영 및 분석 완료",
+        #     "category": ai_response.get("category"),
+        #     "ai_result": ai_response
+        # }
         
     except Exception as e:
         logger.error(f"API 처리 중 오류 발생: {e}", exc_info=True)
