@@ -57,6 +57,14 @@ class Config:
             Config.logger.error("AI_SERVER_URL이 .env 파일에 설정되어 있지 않습니다.")
             raise ValueError("AI_SERVER_URL이 .env 파일에 설정되어 있지 않습니다.")
 
+        if not Config.MQTT_HOST:
+            Config.logger.error("MQTT_HOST가 .env에 설정되지 않았습니다.")
+            raise ValueError("MQTT_HOST 필수")
+        
+        if not all([Config.AWS_ROOT_CA, Config.AWS_CERT, Config.AWS_PRIVATE_KEY]):
+            Config.logger.error("AWS 인증서 경로가 완전하지 않습니다.")
+            raise ValueError("AWS 인증서 파일 경로 필수")
+            
         Config.logger.info("Config 초기화 성공.\n")
     
     @staticmethod
