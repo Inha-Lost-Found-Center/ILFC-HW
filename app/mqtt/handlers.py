@@ -1,7 +1,9 @@
+import json
+import time
 from app.services.camera_service import CameraService
 from app.services.ai_service import AIService
 from app.utils.logger_config import setup_logger
-import time
+from app.hardware.conveyor import ConveyorBelt
 
 logger = setup_logger(__name__)
 
@@ -25,7 +27,7 @@ def process_register_workflow(payload: dict, client):
     1. 사진 촬영
     2. AI 분석 요청
     3. 하드웨어 제어 (컨베이어/액추에이터)
-    4. 결과 보고 (MQTT Publish)
+    4. 결과 보고 (MQTT Publish) -> 얘기 필요
     """
     logger.info("🔄 분실물 등록 프로세스 시작")
     
@@ -43,19 +45,19 @@ def process_register_workflow(payload: dict, client):
         logger.info(f"⚙️ 하드웨어 제어 시작 - 카테고리: {category}")
         control_hardware(category)
         
-        # 4. 결과 보고 (MQTT Publish)
-        result_payload = {
-            "status": "success",
-            "device_name": payload.get("device_name"),
-            "category": category,
-            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "ai_result": ai_response
-        }
+        # # 4. 결과 보고 (MQTT Publish)
+        # result_payload = {
+        #     "status": "success",
+        #     "device_name": payload.get("device_name"),
+        #     "category": category,
+        #     "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+        #     "ai_result": ai_response
+        # }
         
-        # 결과 토픽으로 publish
-        from app.config import Config
-        result_topic = f"locker/register/result/{Config.DEVICE_NAME}"
-        client.publish(result_topic, json.dumps(result_payload), qos=1)
+        # # 결과 토픽으로 publish
+        # from app.config import Config
+        # result_topic = f"locker/register/result/{Config.DEVICE_NAME}"
+        # client.publish(result_topic, json.dumps(result_payload), qos=1)
         
         logger.info(f"✅ 처리 완료 - 카테고리: {category}")
         
@@ -79,16 +81,28 @@ def control_hardware(category: str):
     카테고리에 따라 컨베이어 벨트와 액추에이터 제어
     TODO: 실제 GPIO 제어 코드로 교체 필요
     """
-    logger.info(f"⚙️ 컨베이어 벨트 가동 시작")
-    # GPIO 제어 코드 추가
-    # control_conveyor("ON")
+    try:
+        logger.info("⚙️ 컨베이어 벨트 초기화")
+        ConveyorBelt.initialize()
+      
+        logger.info(f"⚙️ 컨베이어 벨트 가동 시작")
+        ConveyorBelt.enable()
+        logger.info(f"➡️ 컨베이어 벨트 정방향 이동 중...")
+        ConveyorBelt.move_forward()
+        
+        logger.info(f"🦾 '{category}' 분류를 위해 액추에이터 작동")
+        # activate_actuator(category)
+        
+        time.sleep(1)
+        
+        logger.info(f"⚙️ 컨베이어 벨트 정지")
+        ConveyorBelt.disable()
     
-    time.sleep(2)  # 컨베이어 작동 시간
-    
-    logger.info(f"🦾 '{category}' 분류를 위해 액추에이터 작동")
-    # activate_actuator(category)
-    
-    time.sleep(1)
-    
-    logger.info(f"⚙️ 컨베이어 벨트 정지")
-    # control_conveyor("OFF")
+    except Exception as e:
+        logger.error(f"❌ 하드웨어 제어 실패: {e}", exc_info=True)
+        # 에러 발생 시 안전하게 정지
+        try:
+            ConveyorBelt.disable()
+        except:
+            pass
+        raise
