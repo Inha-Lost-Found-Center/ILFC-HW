@@ -4,6 +4,7 @@
 """
 import time
 from app.hardware.conveyor import ConveyorBelt
+from app.hardware.actuator import Actuator
 from app.utils.logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -25,6 +26,7 @@ class HardwareController:
             logger.info("하드웨어 초기화 시작...")
             
             ConveyorBelt.initialize()
+            Actuator.initialize()
             
             cls._initialized = True
             logger.info("모든 하드웨어 초기화 완료")
@@ -39,6 +41,7 @@ class HardwareController:
         if cls._initialized:
             logger.info("하드웨어 정리 중...")
             ConveyorBelt.cleanup()
+            Actuator.cleanup()
             cls._initialized = False
             logger.info("하드웨어 정리 완료")
     
@@ -75,6 +78,7 @@ class HardwareController:
             
             # Step 3: 액추에이터 작동
             logger.info(f"Step 3: '{category}' 보관함으로 분류")
+            Actuator.push_to_bin(category)
             
             # Step 4: 액추에이터 복귀 대기
             logger.info("Step 4: 액추에이터 복귀 대기 (1초)")
