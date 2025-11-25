@@ -47,7 +47,7 @@ def start_mqtt():
     """MQTT 클라이언트 시작"""
     logger.info("🚀 MQTT 클라이언트 초기화 중...")
     
-    # Client ID 설정 (팀원 자료에서는 CLIENT_NAME 사용)
+    # Client ID 설정
     client = mqtt.Client(client_id=Config.CLIENT_NAME)
     
     # TLS 설정
