@@ -13,12 +13,23 @@ class Config:
     # AI 서버 URL
     AI_SERVER_URL = os.getenv("AI_SERVER_URL")
     
-    # 프론트엔드 콜백
-    FRONTEND_URL = os.getenv("FRONTEND_URL")
+    # AWS IoT Core MQTT
+    DEVICE_NAME = os.getenv("DEVICE_NAME")
+    CLIENT_NAME = os.getenv("CLIENT_NAME")
+
+    MQTT_HOST = os.getenv("MQTT_HOST")
+    MQTT_TOPIC = os.getenv("MQTT_TOPIC")
+
+    AWS_ROOT_CA = os.getenv("AWS_ROOT_CA")
+    AWS_CERT = os.getenv("AWS_CERT")
+    AWS_PRIVATE_KEY = os.getenv("AWS_PRIVATE_KEY")
+
+    # # 프론트엔드 콜백
+    # FRONTEND_URL = os.getenv("FRONTEND_URL")
     
-    # 서버 호스트/포트
-    HOST = os.getenv("HOST")
-    PORT = int(os.getenv("PORT"))
+    # # 서버 호스트/포트
+    # HOST = os.getenv("HOST")
+    # PORT = int(os.getenv("PORT"))
     
     # 타임아웃 설정 (초)
     AI_TIMEOUT = int(os.getenv("AI_TIMEOUT", 20))
@@ -46,6 +57,14 @@ class Config:
             Config.logger.error("AI_SERVER_URL이 .env 파일에 설정되어 있지 않습니다.")
             raise ValueError("AI_SERVER_URL이 .env 파일에 설정되어 있지 않습니다.")
 
+        if not Config.MQTT_HOST:
+            Config.logger.error("MQTT_HOST가 .env에 설정되지 않았습니다.")
+            raise ValueError("MQTT_HOST 필수")
+        
+        if not all([Config.AWS_ROOT_CA, Config.AWS_CERT, Config.AWS_PRIVATE_KEY]):
+            Config.logger.error("AWS 인증서 경로가 완전하지 않습니다.")
+            raise ValueError("AWS 인증서 파일 경로 필수")
+            
         Config.logger.info("Config 초기화 성공.\n")
     
     @staticmethod

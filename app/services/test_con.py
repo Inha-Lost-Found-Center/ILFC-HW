@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-# === Pin Mapping (너가 배선한 그대로) ===
+# === Pin Mapping ===
 PUL = 18   # Pulse
 DIR = 23   # Direction
 ENA = 24   # Enable
@@ -13,8 +13,7 @@ GPIO.setup(DIR, GPIO.OUT)
 GPIO.setup(ENA, GPIO.OUT)
 
 # === 모터 활성화 ===
-GPIO.output(ENA, GPIO.LOW)   # ENA LOW = Enable (TB6600 보드에 따라 HIGH일 수도 있음)
-# 반대로 동작하면 HIGH로 바꿔줘!
+GPIO.output(ENA, GPIO.LOW)   # ENA LOW = Enable
 
 def step_motor(direction, steps, speed=0.0005):
     """
@@ -30,27 +29,10 @@ def step_motor(direction, steps, speed=0.0005):
         GPIO.output(PUL, GPIO.LOW)
         time.sleep(speed)
 
-
 try:
     print("모터 테스트 시작")
 
-    print("정방향으로 200스텝")
     step_motor(0, 7000, 0.0005)
-
-    #time.sleep(1)
-
-    print("역방향으로 200스텝")
-    #step_motor(1, 1200, 0.001)
-
-    #ime.sleep(1)
-
-    print("저속 회전 (속도 느리게)")
-    #step_motor(0, 200, 0.005)
-
-    #time.sleep(1)
-
-    print("고속 회전 (속도 빠르게)")
-    #step_motor(0, 200, 0.0005)
 
 except KeyboardInterrupt:
     pass
